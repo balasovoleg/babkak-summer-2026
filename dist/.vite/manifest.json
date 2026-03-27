@@ -1,0 +1,18 @@
+{
+  "_react-vendor-CRgBvUvx.js": {
+    "file": "assets/react-vendor-CRgBvUvx.js",
+    "name": "react-vendor"
+  },
+  "index.html": {
+    "file": "assets/index-DNQAygM6.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_react-vendor-CRgBvUvx.js"
+    ],
+    "css": [
+      "assets/index-B4nYpgIi.css"
+    ]
+  }
+}

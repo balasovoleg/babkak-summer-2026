@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Офлайн - Babkak Summer 2026</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Georgia, serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ffd4e5 0%, #ffeaa7 50%, #74b9ff 100%);
+      padding: 20px;
+    }
+    
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 60px 40px;
+      border-radius: 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      max-width: 500px;
+    }
+    
+    .icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+    
+    h1 {
+      color: #e74c3c;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    
+    p {
+      color: #555;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+    
+    .button {
+      display: inline-block;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      text-decoration: none;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    }
+    
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+    }
+    
+    .status {
+      margin-top: 30px;
+      padding: 15px;
+      background: rgba(255, 193, 7, 0.2);
+      border-radius: 10px;
+      border-left: 4px solid #ffc107;
+    }
+    
+    .status-text {
+      font-size: 0.9rem;
+      color: #856404;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .checking {
+      animation: pulse 2s infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🌴</div>
+    <h1>Нет подключения</h1>
+    <p>
+      Упс! Кажется, вы потеряли связь с интернетом. 
+      Ваши летние воспоминания ждут вас онлайн! ☀️
+    </p>
+    <a href="/" class="button" onclick="window.location.reload(); return false;">
+      Попробовать снова
+    </a>
+    
+    <div class="status">
+      <p class="status-text" id="status">
+        Проверка подключения...
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Проверяем подключение каждые 3 секунды
+    function checkConnection() {
+      const statusEl = document.getElementById('status');
+      
+      fetch('/', { method: 'HEAD', cache: 'no-store' })
+        .then(() => {
+          statusEl.textContent = '✅ Подключение восстановлено! Обновляем...';
+          statusEl.style.color = '#155724';
+          statusEl.parentElement.style.background = 'rgba(40, 167, 69, 0.2)';
+          statusEl.parentElement.style.borderLeftColor = '#28a745';
+          setTimeout(() => window.location.reload(), 1000);
+        })
+        .catch(() => {
+          statusEl.textContent = '📡 Ожидание подключения...';
+          statusEl.classList.add('checking');
+        });
+    }
+
+    // Запускаем проверку
+    setInterval(checkConnection, 3000);
+    checkConnection();
+
+    // Обработчик события восстановления подключения
+    window.addEventListener('online', () => {
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient background -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd4e5;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffeaa7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#74b9ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="120" fill="url(#bgGradient)"/>
+  
+  <!-- Sun icon -->
+  <circle cx="256" cy="180" r="60" fill="#FFD93D" opacity="0.9"/>
+  <circle cx="256" cy="180" r="45" fill="#FFF4A3"/>
+  
+  <!-- Palm tree -->
+  <path d="M230 350 L230 450 L250 450 L250 350 Z" fill="#8B4513"/>
+  <ellipse cx="240" cy="330" rx="80" ry="40" fill="#2ECC71" opacity="0.8"/>
+  <ellipse cx="240" cy="320" rx="90" ry="35" fill="#27AE60" opacity="0.8"/>
+  <ellipse cx="240" cy="310" rx="70" ry="30" fill="#229954" opacity="0.8"/>
+  
+  <!-- Waves -->
+  <path d="M50 400 Q130 380 210 400 T370 400 T530 400 L530 512 L50 512 Z" fill="#74b9ff" opacity="0.7"/>
+  <path d="M30 420 Q110 405 190 420 T350 420 T510 420 L510 512 L30 512 Z" fill="#0984e3" opacity="0.6"/>
+</svg>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор иконок PWA - Babkak Summer</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #ffd4e5 0%, #ffeaa7 50%, #74b9ff 100%);
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #e74c3c;
+      text-align: center;
+    }
+    .info {
+      background: #fff3cd;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+      border-left: 4px solid #ffc107;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    button {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: Georgia, serif;
+      font-size: 16px;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    #preview {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 20px;
+    }
+    .icon-preview {
+      text-align: center;
+    }
+    .icon-preview img {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .icon-preview p {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌸 Генератор PWA иконок</h1>
+    
+    <div class="info">
+      <strong>Инструкция:</strong>
+      <ol>
+        <li>Нажмите кнопку "Генерировать иконки"</li>
+        <li>Скачайте каждую иконку, щелкнув правой кнопкой → "Сохранить как"</li>
+        <li>Сохраните иконки в папку <code>/public/icons/</code></li>
+        <li>Используйте эти имена файлов: icon-72x72.png, icon-96x96.png и т.д.</li>
+      </ol>
+      <p><strong>Или используйте онлайн-сервис:</strong></p>
+      <ul>
+        <li><a href="https://realfavicongenerator.net/" target="_blank">RealFaviconGenerator</a></li>
+        <li><a href="https://www.pwabuilder.com/imageGenerator" target="_blank">PWA Builder Image Generator</a></li>
+      </ul>
+    </div>
+
+    <div class="buttons">
+      <button onclick="generateIcons()">Генерировать иконки</button>
+      <button onclick="downloadAll()">Скачать все</button>
+    </div>
+
+    <div id="preview"></div>
+  </div>
+
+  <script>
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+    const icons = {};
+
+    function generateIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // Gradient background
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#ffd4e5');
+      gradient.addColorStop(0.5, '#ffeaa7');
+      gradient.addColorStop(1, '#74b9ff');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+
+      // Sun
+      const sunSize = size * 0.12;
+      const sunY = size * 0.35;
+      ctx.fillStyle = '#FFD93D';
+      ctx.beginPath();
+      ctx.arc(size/2, sunY, sunSize, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Palm tree trunk
+      const trunkWidth = size * 0.04;
+      const trunkHeight = size * 0.2;
+      const trunkX = size/2 - trunkWidth/2;
+      const trunkY = size * 0.68;
+      ctx.fillStyle = '#8B4513';
+      ctx.fillRect(trunkX, trunkY, trunkWidth, trunkHeight);
+
+      // Palm leaves
+      ctx.fillStyle = '#2ECC71';
+      ctx.beginPath();
+      ctx.ellipse(size/2, trunkY - size*0.02, size*0.16, size*0.08, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Waves
+      ctx.fillStyle = 'rgba(116, 185, 255, 0.7)';
+      ctx.beginPath();
+      ctx.moveTo(0, size * 0.78);
+      for (let x = 0; x <= size; x += size / 20) {
+        const y = size * 0.78 + Math.sin(x / (size / 20)) * (size * 0.02);
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(size, size);
+      ctx.lineTo(0, size);
+      ctx.closePath();
+      ctx.fill();
+
+      // Text "B" (для малых размеров)
+      if (size >= 128) {
+        ctx.fillStyle = 'white';
+        ctx.font = `bold ${size * 0.3}px Georgia`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(0,0,0,0.3)';
+        ctx.shadowBlur = size * 0.02;
+        ctx.fillText('B', size/2, size * 0.55);
+      }
+
+      return canvas.toDataURL('image/png');
+    }
+
+    function generateIcons() {
+      const preview = document.getElementById('preview');
+      preview.innerHTML = '';
+
+      sizes.forEach(size => {
+        const dataUrl = generateIcon(size);
+        icons[size] = dataUrl;
+
+        const div = document.createElement('div');
+        div.className = 'icon-preview';
+        div.innerHTML = `
+          <a href="${dataUrl}" download="icon-${size}x${size}.png">
+            <img src="${dataUrl}" alt="${size}x${size}">
+          </a>
+          <p>${size}x${size}</p>
+        `;
+        preview.appendChild(div);
+      });
+    }
+
+    function downloadAll() {
+      if (Object.keys(icons).length === 0) {
+        alert('Сначала сгенерируйте иконки!');
+        return;
+      }
+
+      sizes.forEach(size => {
+        const a = document.createElement('a');
+        a.href = icons[size];
+        a.download = `icon-${size}x${size}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+    }
+
+    // Auto-generate on load
+    window.addEventListener('load', generateIcons);
+  </script>
+</body>
+</html>
